@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "890705048386",
+    "firebase_url": "https://onetouch-38c1c.firebaseio.com",
+    "project_id": "onetouch-38c1c",
+    "storage_bucket": "onetouch-38c1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890705048386:android:916b543c11cd03ee",
+        "android_client_info": {
+          "package_name": "get.onetouch.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "890705048386-9hud0minda0751ttgga6msvg2jedh9bg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRxabh586LFMSV9Y5m9Uj4DCAfK-SGfNM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
