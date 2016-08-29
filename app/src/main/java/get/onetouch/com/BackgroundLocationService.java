@@ -188,7 +188,7 @@ public class BackgroundLocationService extends Service implements
         Log.d("XOXO","Lat"+lat+"Lang"+lang);
 
 
-        mUser=new User(user.getDisplayName(),user.getEmail(),lat.toString(),lang.toString(),currentDateandTime);
+        mUser=new User(user.getDisplayName(),user.getEmail(),String.valueOf(lat),String.valueOf(lang),currentDateandTime);
         Map<String, Object> userValues = mUser.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/users/" + mUID, userValues);

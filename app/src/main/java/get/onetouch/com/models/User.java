@@ -45,7 +45,7 @@ public class User {
         result.put("lang",lang);
         result.put("time",time);
         result.put("help",help);
-        result.put("helplat",helpUserId);
+        result.put("helpUserId",helpUserId);
         return result;
     }
 

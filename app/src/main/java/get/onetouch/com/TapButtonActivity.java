@@ -40,7 +40,8 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
         Typeface Roboto = Typeface.createFromAsset(getAssets(), "CaviarDreams.ttf");
         mAppTitle.setTypeface(Roboto);
         mAppTitle.setTextColor(Color.WHITE);
-
+        initialize();
+        initializeAuthRef();
        findViewById(R.id.fab).setOnClickListener(this);
 
         Uid=getUserId();
@@ -103,7 +104,7 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                        for(DataSnapshot ChildSnapshot:dataSnapshot.getChildren())
                        {
                            User mUser=ChildSnapshot.getValue(User.class);
-                           if(calculateDistance(Double.parseDouble(Ulang),Double.parseDouble(Ulat),Double.parseDouble(mUser.lang),Double.parseDouble(mUser.lat))>10 && !ChildSnapshot.getKey().toString().equals(Uid))
+                           if(calculateDistance(Double.parseDouble(Ulang),Double.parseDouble(Ulat),Double.parseDouble(mUser.lang),Double.parseDouble(mUser.lat))<10 && !ChildSnapshot.getKey().toString().equals(Uid))
                            {
                                mUser.help=true;
                                mUser.helpUserId=Uid;
