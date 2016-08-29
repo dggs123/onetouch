@@ -28,7 +28,7 @@ public class TapButtonActivity extends AppCompatActivity implements View.OnClick
         mAppTitle.setTypeface(Roboto);
         mAppTitle.setTextColor(Color.WHITE);
 
-        RunInBackground();
+        findViewById(R.id.fab).setOnClickListener(this);
 
 
 
@@ -36,10 +36,11 @@ public class TapButtonActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void RunInBackground() {
+        Toast.makeText(TapButtonActivity.this, "Service started", Toast.LENGTH_SHORT).show();
         //BackgroudLocationService is started
         startService(new Intent(getBaseContext(), BackgroundLocationService.class));
         //Toast to display the start service
-        Toast.makeText(getBaseContext(), "Service started", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -47,7 +48,7 @@ public class TapButtonActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId())
         {
             case R.id.fab:
-
+                RunInBackground();
                 break;
         }
     }
