@@ -59,6 +59,7 @@ public class BackgroundLocationService extends Service implements
     //Getting FireBase Reference i.e https://employee-tracker123.firebaseio.com/EmployeeID/<User Id>
     DatabaseReference UserId;
     User mUser;
+    int flag=1;
 
 
     // Flag that indicates if a request is underway.
@@ -187,15 +188,20 @@ public class BackgroundLocationService extends Service implements
         String currentDateandTime = sdf.format(new Date());
         Log.d("XOXO","Lat"+lat+"Lang"+lang);
 
-
-        mUser=new User(user.getDisplayName(),user.getEmail(),String.valueOf(lat),String.valueOf(lang),currentDateandTime);
-        Map<String, Object> userValues = mUser.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/users/" + mUID, userValues);
-        mRef.updateChildren(childUpdates);
-
-
-
+        if(flag==1) {
+            mUser = new User(user.getDisplayName(), user.getEmail(), String.valueOf(lat), String.valueOf(lang), currentDateandTime);
+            Map<String, Object> userValues = mUser.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put("/users/" + mUID, userValues);
+            mRef.updateChildren(childUpdates);
+            flag=0;
+        }
+        else
+        {
+            mRef.child("users").child(mUID).child("lat").setValue(String.valueOf(lat));
+            mRef.child("users").child(mUID).child("lang").setValue(String.valueOf(lang));
+            mRef.child("users").child(mUID).child("time").setValue(currentDateandTime);
+        }
     }
 
     @Override
