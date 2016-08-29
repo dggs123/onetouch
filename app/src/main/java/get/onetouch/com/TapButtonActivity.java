@@ -43,7 +43,6 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
         initialize();
         initializeAuthRef();
        findViewById(R.id.fab).setOnClickListener(this);
-
         Uid=getUserId();
         if(iAmIn==true)
             RunInBackground();
@@ -54,6 +53,7 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void RunInBackground() {
+        Toast.makeText(TapButtonActivity.this, "Service started", Toast.LENGTH_SHORT).show();
         //BackgroudLocationService is started
         startService(new Intent(getBaseContext(), BackgroundLocationService.class));
         //Toast to display the start service
@@ -131,7 +131,6 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
             case R.id.fab:
                 findUserLatLong();
                 findAndSendNotificationToNearUser(Uid);
-
                 break;
         }
     }
