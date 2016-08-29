@@ -56,6 +56,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    finish();
                     startActivity(new Intent(SignInActivity.this,TapButtonActivity.class));
                 } else {
                     // User is signed out
