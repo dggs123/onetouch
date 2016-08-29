@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "1069930956888",
+    "firebase_url": "https://one-touch-c6b1c.firebaseio.com",
+    "project_id": "one-touch-c6b1c",
+    "storage_bucket": "one-touch-c6b1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069930956888:android:916b543c11cd03ee",
+        "android_client_info": {
+          "package_name": "get.onetouch.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069930956888-vu65geknfg7rqsbjt5s784muiha1fvir.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "get.onetouch.com",
+            "certificate_hash": "F33E34F920EC8DACC7408623D837528B6D401DBA"
+          }
+        },
+        {
+          "client_id": "1069930956888-2rhp5crg87pc1ff5h11hud7li3mosg6r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT8vG7GFvV_VJjdftJz63nJ6pAwlWQd9I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069930956888-2eaimkp2aa4ilh84rd496l4r0oi9qcdp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "get.onetouch.com"
+              }
+            },
+            {
+              "client_id": "1069930956888-2rhp5crg87pc1ff5h11hud7li3mosg6r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
