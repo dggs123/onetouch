@@ -115,6 +115,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.AppCompatButton
+
         android:background="@android:color/holo_purple"
         android:id="@+id/btn_login"
         android:layout_width="fill_parent"
