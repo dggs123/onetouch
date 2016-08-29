@@ -6,6 +6,9 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * Created by gaurav on 29/8/16.
@@ -13,17 +16,25 @@ import com.google.firebase.auth.FirebaseUser;
 public class BaseActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     public FirebaseAuth mAuth;
+    public DatabaseReference mDatabase;
+
+    public void initialize() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+    }
+
+
 
     public void initializeAuthRef()
     {
         mAuth = FirebaseAuth.getInstance();
 
     }
-
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("Loading...");
+
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
         }
         mProgressDialog.show();
     }
@@ -50,4 +61,11 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
     //[ end current userid]
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        hideProgressDialog();
+    }
+
 }
