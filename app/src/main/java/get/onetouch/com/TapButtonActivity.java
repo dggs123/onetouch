@@ -110,8 +110,6 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                             User mUser=dataSnapshot.getValue(User.class);
                             Ulat=mUser.lat;
                             Ulang=mUser.lang;
-
-
                         hideProgressDialog();
 
                     }
@@ -140,7 +138,7 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                                    Double.parseDouble(Ulang),Double.parseDouble(mUser.lat),Double.parseDouble(mUser.lang),results);
                            float dist=results[0];
                            Log.d(TAG,String.valueOf(dist));
-                           if(dist<1000.0 && !ChildSnapshot.getKey().toString().equals(Uid))
+                           if(dist<1000.0 && dist>10.00 && !ChildSnapshot.getKey().toString().equals(Uid))
                            {
                                mUser.help=true;
                                mUser.helpUserId=Uid;
