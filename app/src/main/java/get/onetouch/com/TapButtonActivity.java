@@ -74,6 +74,8 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
 
 
 
+
+
     }
     public void onStart() {
         super.onStart();
@@ -119,6 +121,8 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                         Log.w("XXXX", "getUser:onCancelled", databaseError.toException());
                     }
                 });
+
+
     }
 
     void findAndSendNotificationToNearUser(final String Uid)
@@ -161,6 +165,7 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.fab:
+                Toast.makeText(TapButtonActivity.this, "SEARCHING.....", Toast.LENGTH_LONG).show();
                 findUserLatLong();
                 findAndSendNotificationToNearUser(Uid);
                 break;

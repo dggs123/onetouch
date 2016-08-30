@@ -25,8 +25,11 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -56,6 +59,7 @@ public class BackgroundLocationService extends Service implements
 
     //Getting Firebase Reference intial i.e https://employee-tracker123.firebaseio.com/EmployeeID
     DatabaseReference mRef;
+    DatabaseReference mDatabase;
     //Getting FireBase Reference i.e https://employee-tracker123.firebaseio.com/EmployeeID/<User Id>
     DatabaseReference UserId;
     User mUser;
@@ -95,12 +99,41 @@ public class BackgroundLocationService extends Service implements
         mInProgress = false;
 
         servicesAvailable = servicesConnected();
+
+
+        //Help Listener i.e If the other user ask for help
+        mDatabase.child("users").child(mUID).addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User mUser=dataSnapshot.getValue(User.class);
+                        String userHelp=mUser.help.toString();
+                        Log.d("XOXO","User Help VALUE :"+userHelp);
+                        if(userHelp.equals("true"))
+                        {
+                            Intent intent = new Intent(BackgroundLocationService.this, HelpActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            Bundle b=new Bundle();
+                            b.putString("helpuserID",mUser.helpUserId);
+                            intent.putExtras(b);
+
+                            startActivity(intent);
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("XXXX", "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+
     }
 
 
     private void intializefirebase() {
 
         mRef = FirebaseDatabase.getInstance().getReference();
+        mDatabase=mRef;
 
 
     }
