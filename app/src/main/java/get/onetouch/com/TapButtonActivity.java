@@ -3,6 +3,7 @@ package get.onetouch.com;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +30,10 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
     TextView mAppTitle;
     Boolean iAmIn=true;
     public String Uid;
-    public String Ulat,Ulang;
+    public String Ulat,Ulang,helpuid;
+    Boolean help=false;
+    public String TAG="TapButtonActivity";
+    ValueEventListener postListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,29 +51,52 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
         if(iAmIn==true)
             RunInBackground();
 
+        postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                User mUser = dataSnapshot.getValue(User.class);
+                if(mUser.help==true) {
+                    help = true;
+                    helpuid = mUser.helpUserId;
+                    Log.d(TAG, helpuid);
+                }
+                // ...
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
 
 
 
     }
+    public void onStart() {
+        super.onStart();
+        mDatabase.child("users").child(Uid).addValueEventListener(postListener);
+    }
 
-    private void RunInBackground() {
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (postListener != null) {
+            mDatabase.child("users").child(Uid).removeEventListener(postListener);
+
+        }
+    }
+
+
+        private void RunInBackground() {
         Toast.makeText(TapButtonActivity.this, "Service started", Toast.LENGTH_SHORT).show();
         //BackgroudLocationService is started
         startService(new Intent(getBaseContext(), BackgroundLocationService.class));
         //Toast to display the start service
         Toast.makeText(getBaseContext(), "Service started", Toast.LENGTH_SHORT).show();
 
-    }
-    private double calculateDistance(double fromLong, double fromLat,
-                                     double toLong, double toLat) {
-        double d2r = Math.PI / 180;
-        double dLong = (toLong - fromLong) * d2r;
-        double dLat = (toLat - fromLat) * d2r;
-        double a = Math.pow(Math.sin(dLat / 2.0), 2) + Math.cos(fromLat * d2r)
-                * Math.cos(toLat * d2r) * Math.pow(Math.sin(dLong / 2.0), 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double d = 6367000 * c;
-        return Math.round(d);
     }
     void findUserLatLong()
     {
@@ -104,7 +131,12 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                        for(DataSnapshot ChildSnapshot:dataSnapshot.getChildren())
                        {
                            User mUser=ChildSnapshot.getValue(User.class);
-                           if(calculateDistance(Double.parseDouble(Ulang),Double.parseDouble(Ulat),Double.parseDouble(mUser.lang),Double.parseDouble(mUser.lat))<100.0 && !ChildSnapshot.getKey().toString().equals(Uid))
+                           float results[]=new float[4];
+                            Location.distanceBetween(Double.parseDouble(Ulat),
+                                   Double.parseDouble(Ulang),Double.parseDouble(mUser.lat),Double.parseDouble(mUser.lang),results);
+                           float dist=results[0];
+                           Log.d(TAG,String.valueOf(dist));
+                           if(dist<1000.0 && !ChildSnapshot.getKey().toString().equals(Uid))
                            {
                                mUser.help=true;
                                mUser.helpUserId=Uid;
