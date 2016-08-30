@@ -263,7 +263,7 @@ public class BackgroundLocationService extends Service implements
 
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(10000); // Update location every 10 econd
+        mLocationRequest.setInterval(5000); // Update location every 10 econd
 
 
         LocationServices.FusedLocationApi.requestLocationUpdates(
