@@ -20,13 +20,14 @@ public class User {
     public String time;
     public Boolean help;
     public String helpUserId;
+    public int flag=0;
 
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public User(String name, String email,String lat,String lang,String time) {
+    public User(String name, String email,String lat,String lang,String time,int flag) {
         this.name=name;
         this.email = email;
         this.lat = lat;
@@ -35,6 +36,9 @@ public class User {
         this.time=time;
         this.help=false;
         this.helpUserId="";
+        if(flag==1) {
+            this.flag = flag;
+        }
     }
     @Exclude
     public Map<String, Object> toMap() {
@@ -46,6 +50,7 @@ public class User {
         result.put("time",time);
         result.put("help",help);
         result.put("helpUserId",helpUserId);
+        result.put("flag",flag);
         return result;
     }
 

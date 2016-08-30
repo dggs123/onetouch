@@ -222,7 +222,7 @@ public class BackgroundLocationService extends Service implements
         Log.d("XOXO","Lat"+lat+"Lang"+lang);
 
         if(flag==1) {
-            mUser = new User(user.getDisplayName(), user.getEmail(), String.valueOf(lat), String.valueOf(lang), currentDateandTime);
+            mUser = new User(user.getDisplayName(), user.getEmail(), String.valueOf(lat), String.valueOf(lang), currentDateandTime,1);
             Map<String, Object> userValues = mUser.toMap();
             Map<String, Object> childUpdates = new HashMap<>();
             childUpdates.put("/users/" + mUID, userValues);
@@ -231,6 +231,7 @@ public class BackgroundLocationService extends Service implements
         }
         else
         {
+            mRef.child("users").child(mUID).child("flag").setValue(0);
             mRef.child("users").child(mUID).child("lat").setValue(String.valueOf(lat));
             mRef.child("users").child(mUID).child("lang").setValue(String.valueOf(lang));
             mRef.child("users").child(mUID).child("time").setValue(currentDateandTime);
