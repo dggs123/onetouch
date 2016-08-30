@@ -50,6 +50,8 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
 
 
 
+
+
     }
 
     private void RunInBackground() {
@@ -92,6 +94,8 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                         Log.w("XXXX", "getUser:onCancelled", databaseError.toException());
                     }
                 });
+
+
     }
 
     void findAndSendNotificationToNearUser(final String Uid)
