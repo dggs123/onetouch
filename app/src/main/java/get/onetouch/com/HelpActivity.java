@@ -13,6 +13,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,6 +37,7 @@ public class HelpActivity extends BaseActivity implements OnMapReadyCallback {
     String helpUserId;
     Double helpLat,helpLong;
     private GoogleMap mMap;
+    Marker marker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +77,12 @@ public class HelpActivity extends BaseActivity implements OnMapReadyCallback {
 
                         if(helpLat!=null && helpLong!=null){
                             LatLng sydney = new LatLng(helpLat, helpLong);
+                            CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+                            mMap.clear();
                             mMap.addMarker(new MarkerOptions().position(sydney).title("Victim"));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));}
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                            mMap.animateCamera(zoom);
+                        }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
