@@ -108,7 +108,7 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                        for(DataSnapshot ChildSnapshot:dataSnapshot.getChildren())
                        {
                            User mUser=ChildSnapshot.getValue(User.class);
-                           if(calculateDistance(Double.parseDouble(Ulang),Double.parseDouble(Ulat),Double.parseDouble(mUser.lang),Double.parseDouble(mUser.lat))<100.0 && !ChildSnapshot.getKey().toString().equals(Uid))
+                           if(calculateDistance(Double.parseDouble(Ulang),Double.parseDouble(Ulat),Double.parseDouble(mUser.lang),Double.parseDouble(mUser.lat))<100.0)
                            {
                                mUser.help=true;
                                mUser.helpUserId=Uid;
@@ -133,6 +133,7 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.fab:
+                Toast.makeText(TapButtonActivity.this, "SEARCHING.....", Toast.LENGTH_LONG).show();
                 findUserLatLong();
                 findAndSendNotificationToNearUser(Uid);
                 break;
