@@ -4,11 +4,27 @@
     android:background="#1d1426"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:elevation="4dp">
-    <TextView
-        android:id="@+id/AppT"
-        android:textSize="35sp"
-        android:gravity="center"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="OneTouch"/>
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/AppT"
+            android:textSize="35sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:lines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OneTouch"/>
+        <Switch
+            android:checked="true"
+            android:layout_marginRight="8dp"
+            android:layout_alignParentRight="true"
+            android:id="@+id/actionbar_service_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            />
+    </RelativeLayout>
+
 </android.support.v7.widget.Toolbar>

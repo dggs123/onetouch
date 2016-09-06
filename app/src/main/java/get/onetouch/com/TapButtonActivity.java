@@ -1,5 +1,7 @@
 package get.onetouch.com;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -9,12 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.skyfishjy.library.RippleBackground;
 
 import org.w3c.dom.Text;
 
@@ -28,12 +33,15 @@ import get.onetouch.com.models.User;
 public class TapButtonActivity extends BaseActivity implements View.OnClickListener{
     Toolbar toolbar;
     TextView mAppTitle;
+    Switch miamIn;
     Boolean iAmIn=true;
     public String Uid;
     public String Ulat,Ulang,helpuid;
     Boolean help=false;
     public String TAG="TapButtonActivity";
     ValueEventListener postListener;
+    RippleBackground rippleBackground;
+    int flagRipple=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,21 +49,36 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_tapbutton);
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         mAppTitle = (TextView) findViewById(R.id.AppT);
+        miamIn= (Switch) findViewById(R.id.actionbar_service_toggle);
         Typeface Roboto = Typeface.createFromAsset(getAssets(), "CaviarDreams.ttf");
         mAppTitle.setTypeface(Roboto);
         mAppTitle.setTextColor(Color.WHITE);
+        rippleBackground=(RippleBackground)findViewById(R.id.content);
+
+
+
         initialize();
         initializeAuthRef();
        findViewById(R.id.fab).setOnClickListener(this);
         Uid=getUserId();
-        if(iAmIn==true)
-            RunInBackground();
+     miamIn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+         @Override
+         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+             if(isChecked==true)
+                 RunInBackground();
+             else
+                 StopService();
+         }
+     });
+
 
         postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 User mUser = dataSnapshot.getValue(User.class);
+                Boolean mHelp=mUser.help;
+                if(mHelp!=null)
                 if(mUser.help==true) {
                     help = true;
                     helpuid = mUser.helpUserId;
@@ -77,19 +100,35 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
 
 
     }
+
+    private void StopService() {
+        //Temporary terminate the Service
+        if(isMyServiceRunning(BackgroundLocationService.class))
+            stopService(new Intent(TapButtonActivity.this,BackgroundLocationService.class));
+    }
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void onStart() {
         super.onStart();
         mDatabase.child("users").child(Uid).addValueEventListener(postListener);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (postListener != null) {
-            mDatabase.child("users").child(Uid).removeEventListener(postListener);
-
-        }
-    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        if (postListener != null) {
+//            mDatabase.child("users").child(Uid).removeEventListener(postListener);
+//
+//        }
+//    }
 
 
         private void RunInBackground() {
@@ -108,7 +147,7 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                             User mUser=dataSnapshot.getValue(User.class);
-                            Ulat=mUser.lat;
+                              Ulat=mUser.lat;
                             Ulang=mUser.lang;
                         hideProgressDialog();
 
@@ -163,9 +202,17 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.fab:
-                Toast.makeText(TapButtonActivity.this, "SEARCHING.....", Toast.LENGTH_LONG).show();
-                findUserLatLong();
-                findAndSendNotificationToNearUser(Uid);
+
+
+                if(!rippleBackground.isRippleAnimationRunning()){
+                    rippleBackground.startRippleAnimation();
+                    findUserLatLong();
+                    findAndSendNotificationToNearUser(Uid);
+                    Toast.makeText(TapButtonActivity.this, "SEARCHING.....", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    rippleBackground.stopRippleAnimation();
+                }
                 break;
         }
     }

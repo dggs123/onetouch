@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.dd.processbutton.iml.ActionProcessButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,6 +28,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private String TAG = "SignInActivity";
     EditText mEmail,mPassword,mName,mConfirmPassword;
     String email,password,name,confirmPassword;
+    ActionProcessButton btnSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         mAppTitle.setText("OneTouch");
         mAppTitle.setTypeface(Roboto);
         findViewById(R.id.btn_login).setOnClickListener(this);
+        btnSignIn = (ActionProcessButton) findViewById(R.id.btn_login);
+        btnSignIn.setMode(ActionProcessButton.Mode.PROGRESS);
 
         // initalize auth ref
         initializeAuthRef();
@@ -84,7 +88,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     // [Sign up New User]
     void addUser(final String email,final String password)
     {
-        showProgressDialog();
+        btnSignIn.setMode(ActionProcessButton.Mode.ENDLESS);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -95,9 +99,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-
+                            btnSignIn.setProgress(-1);
                         }
-                        hideProgressDialog();
+                        btnSignIn.setProgress(100);
                     }
                 });
 

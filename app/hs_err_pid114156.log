@@ -1,0 +1,80 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 869456 bytes for Chunk::new
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:323), pid=114156, tid=114188
+#
+# JRE version: Java(TM) SE Runtime Environment (7.0_79-b15) (build 1.7.0_79-b15)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (24.79-b02 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000008a75800):  JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=114188, stack(0x0000000009fe0000,0x000000000a0e0000)]
+
+Stack: [0x0000000009fe0000,0x000000000a0e0000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+
+Current CompileTask:
+C2:   1358  221   !         com.android.dx.cf.code.Ropper::processBlock (1101 bytes)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x000000000a630000 JavaThread "pool-2-thread-4" [_thread_in_Java, id=114364, stack(0x000000000abe0000,0x000000000ace0000)]
+  0x000000000a629800 JavaThread "pool-2-thread-3" [_thread_in_Java, id=114048, stack(0x000000000aae0000,0x000000000abe0000)]
+  0x000000000a63d800 JavaThread "pool-2-thread-2" [_thread_in_Java, id=101832, stack(0x000000000a9e0000,0x000000000aae0000)]
+  0x000000000a6b6800 JavaThread "pool-3-thread-1" [_thread_blocked, id=107140, stack(0x000000000a8e0000,0x000000000a9e0000)]
+  0x000000000a6b5800 JavaThread "pool-2-thread-1" [_thread_in_vm, id=113708, stack(0x000000000a7e0000,0x000000000a8e0000)]
+  0x0000000008a89800 JavaThread "Service Thread" daemon [_thread_blocked, id=112652, stack(0x000000000a1e0000,0x000000000a2e0000)]
+  0x0000000008a77800 JavaThread "C2 CompilerThread1" daemon [_thread_in_native, id=113996, stack(0x000000000a0e0000,0x000000000a1e0000)]
+=>0x0000000008a75800 JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=114188, stack(0x0000000009fe0000,0x000000000a0e0000)]
+  0x0000000008a75000 JavaThread "Attach Listener" daemon [_thread_blocked, id=99720, stack(0x0000000009ee0000,0x0000000009fe0000)]
+  0x0000000008a72000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=114396, stack(0x0000000009de0000,0x0000000009ee0000)]
+  0x0000000008a40800 JavaThread "Finalizer" daemon [_thread_blocked, id=85516, stack(0x0000000009ce0000,0x0000000009de0000)]
+  0x0000000008a37800 JavaThread "Reference Handler" daemon [_thread_blocked, id=114388, stack(0x0000000009be0000,0x0000000009ce0000)]
+  0x0000000002a8d800 JavaThread "main" [_thread_in_Java, id=85872, stack(0x0000000002910000,0x0000000002a10000)]
+
+Other Threads:
+  0x0000000008a32800 VMThread [stack: 0x0000000009ae0000,0x0000000009be0000] [id=2776]
+  0x0000000008a93800 WatcherThread [stack: 0x000000000a2e0000,0x000000000a3e0000] [id=108652]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ PSYoungGen      total 38400K, used 28484K [0x00000000eaa80000, 0x00000000ed500000, 0x0000000100000000)
+  eden space 33280K, 70% used [0x00000000eaa80000,0x00000000ec154228,0x00000000ecb00000)
+  from space 5120K, 99% used [0x00000000ecb00000,0x00000000ecffcfc0,0x00000000ed000000)
+  to   space 5120K, 0% used [0x00000000ed000000,0x00000000ed000000,0x00000000ed500000)
+ ParOldGen       total 86016K, used 577K [0x00000000c0000000, 0x00000000c5400000, 0x00000000eaa80000)
+  object space 86016K, 0% used [0x00000000c0000000,0x00000000c0090430,0x00000000c5400000)
+ PSPermGen       total 21504K, used 5853K [0x00000000bae00000, 0x00000000bc300000, 0x00000000c0000000)
+  object space 21504K, 27% used [0x00000000bae00000,0x00000000bb3b76c0,0x00000000bc300000)
+
+Card table byte_map: [0x0000000005ca0000,0x0000000005ed0000] byte_map_base: 0x00000000056c9000
+
+Polling page: 0x00000000011d0000
+
+Code Cache  [0x0000000002be0000, 0x0000000002e50000, 0x0000000005be0000)
+ total_blobs=457 nmethods=221 adapters=188 free_code_cache=48260Kb largest_free_block=49378240
+
+Compilation events (10 events):
+Event: 1.250 Thread 0x0000000008a75800 nmethod 216 0x0000000002cbe910 code [0x0000000002cbea40, 0x0000000002cbeab8]
