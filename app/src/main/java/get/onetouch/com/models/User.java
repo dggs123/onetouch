@@ -20,6 +20,7 @@ public class User {
     public String time;
     public Boolean help;
     public String helpUserId;
+    public int helpcount=0;
     public int flag=0;
 
 
@@ -51,6 +52,7 @@ public class User {
         result.put("help",help);
         result.put("helpUserId",helpUserId);
         result.put("flag",flag);
+        result.put("helpcount",helpcount);
         return result;
     }
 

@@ -139,6 +139,27 @@ public class HelpActivity extends BaseActivity implements OnMapReadyCallback,Vie
                 });
     }
 
+    public void increaseHelpCount()
+    {
+        showProgressDialog();
+        mDatabase.child("users").child(helpUserId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User mUser=dataSnapshot.getValue(User.class);
+                        mUser.helpcount+=1;
+                        mDatabase.child("users").child(uid).setValue(mUser);
+                        hideProgressDialog();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("XXXX", "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -147,6 +168,11 @@ public class HelpActivity extends BaseActivity implements OnMapReadyCallback,Vie
                 stopServiceToFalse();
                 finish();
                 break;
+            case R.id.help:
+                increaseHelpCount();
+                //disable help buton here -- to gulzi..
+                break;
+
         }
     }
 }
