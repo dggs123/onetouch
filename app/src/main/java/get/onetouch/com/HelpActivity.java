@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -30,12 +32,13 @@ import get.onetouch.com.models.User;
 /**
  * Created by Gulzar on 30-08-2016.
  */
-public class HelpActivity extends BaseActivity implements OnMapReadyCallback {
+public class HelpActivity extends BaseActivity implements OnMapReadyCallback,View.OnClickListener {
     TextView mHelpWanted;
     String helpUserId;
     Double helpLat,helpLong;
     private GoogleMap mMap;
     Marker marker;
+    String uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,19 +51,24 @@ public class HelpActivity extends BaseActivity implements OnMapReadyCallback {
         Typeface Roboto = Typeface.createFromAsset(getAssets(),"CaviarDreams_Bold.ttf");
         mHelpWanted.setTypeface(Roboto);
 
+        initialize();
+        initializeAuthRef();
+
+        //Vibrate Screen on Launch
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(900);
+        //getting userid
+        uid=getUserId();
+        findViewById(R.id.ignore).setOnClickListener(this);
+        //Temporary terminate the Service
+        if(isMyServiceRunning(BackgroundLocationService.class))
+            stopService(new Intent(HelpActivity.this,BackgroundLocationService.class));
         //Get Value from Intent
         if(b!=null)
         {
             helpUserId=b.getString("helpuserID");
         }
-        initialize();
         Log.d("XOXO","Help User ID"+helpUserId);
-
-
-        //Temporary terminate the Service
-        if(isMyServiceRunning(BackgroundLocationService.class))
-            stopService(new Intent(HelpActivity.this,BackgroundLocationService.class));
-
 
         //Listner to listen to change in victims location!
         mDatabase.child("users").child(helpUserId).addValueEventListener(
@@ -90,7 +98,6 @@ public class HelpActivity extends BaseActivity implements OnMapReadyCallback {
 
 
 
-
                 });
 
 
@@ -109,5 +116,37 @@ public class HelpActivity extends BaseActivity implements OnMapReadyCallback {
         mMap = googleMap;
 
 
+    }
+    public void stopServiceToFalse()
+    {
+        showProgressDialog();
+        mDatabase.child("users").child(uid).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User mUser=dataSnapshot.getValue(User.class);
+                        mUser.help=false;
+                        mUser.helpUserId="";
+                        mDatabase.child("users").child(uid).setValue(mUser);
+                        hideProgressDialog();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("XXXX", "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.ignore:
+                stopServiceToFalse();
+                finish();
+                break;
+        }
     }
 }

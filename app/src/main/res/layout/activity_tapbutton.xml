@@ -22,13 +22,20 @@
         app:rb_duration="1000"
         app:rb_scale="6">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:gravity="center">
-
+            <Button
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Help Me"
+                android:textSize="30sp"
+                />
             <android.support.design.widget.FloatingActionButton
                 app:backgroundTint="#2c1e38"
                 android:id="@+id/fab"
@@ -38,7 +45,7 @@
                 />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </com.skyfishjy.library.RippleBackground>

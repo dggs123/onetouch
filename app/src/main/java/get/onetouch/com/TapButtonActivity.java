@@ -1,14 +1,17 @@
 package get.onetouch.com;
 
 import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -24,6 +27,7 @@ import com.skyfishjy.library.RippleBackground;
 import org.w3c.dom.Text;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
 
 import get.onetouch.com.models.User;
 
@@ -57,6 +61,8 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
 
 
 
+
+
         initialize();
         initializeAuthRef();
        findViewById(R.id.fab).setOnClickListener(this);
@@ -78,7 +84,6 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                 // Get Post object and use the values to update the UI
                 User mUser = dataSnapshot.getValue(User.class);
                 Boolean mHelp=mUser.help;
-                if(mHelp!=null)
                 if(mUser.help==true) {
                     help = true;
                     helpuid = mUser.helpUserId;
@@ -177,7 +182,7 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                                    Double.parseDouble(Ulang),Double.parseDouble(mUser.lat),Double.parseDouble(mUser.lang),results);
                            float dist=results[0];
                            Log.d(TAG,String.valueOf(dist));
-                           if(dist<1000.0 && dist>10.00 && !ChildSnapshot.getKey().toString().equals(Uid))
+                           if(dist<1000.0 && !ChildSnapshot.getKey().toString().equals(Uid))
                            {
                                mUser.help=true;
                                mUser.helpUserId=Uid;
@@ -188,6 +193,29 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
 
                         hideProgressDialog();
 
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("XXXX", "getUser:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+    void resetNotificationToNearUser()
+    {
+        showProgressDialog();
+        mDatabase.child("users").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ChildSnapshot:dataSnapshot.getChildren())
+                        {
+                            User mUser=ChildSnapshot.getValue(User.class);
+                            mUser.help=false;
+                            mUser.helpUserId="";
+                            mDatabase.child("users").child(ChildSnapshot.getKey()).setValue(mUser);
+                        }
+                        hideProgressDialog();
                     }
 
                     @Override
@@ -208,16 +236,30 @@ public class TapButtonActivity extends BaseActivity implements View.OnClickListe
                     rippleBackground.startRippleAnimation();
                     findUserLatLong();
                     findAndSendNotificationToNearUser(Uid);
-                    Toast.makeText(TapButtonActivity.this, "SEARCHING.....", Toast.LENGTH_LONG).show();
+                    Toast.makeText(TapButtonActivity.this, "Don't Panick\n Getting Help", Toast.LENGTH_LONG).show();
+                   // sendSMS("9742634857","One Touch");
                 }
                 else {
                     rippleBackground.stopRippleAnimation();
+                    resetNotificationToNearUser();
                 }
                 break;
         }
     }
 
 
+    public void sendSMS(String phoneNo, String msg){
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            Toast.makeText(getApplicationContext(), "Message Sent",
+                    Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(),ex.getMessage().toString(),
+                    Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
+        }
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
