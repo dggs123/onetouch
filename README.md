@@ -25,7 +25,7 @@ The organizers then graded the teams using a range of criteria and declared the 
 ### Android app development
 
 * Gulzar Ahmed
-* Gaurav Sehagal
+* Gaurav Sehgal
 
 ### Presentation team
 
